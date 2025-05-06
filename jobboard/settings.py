@@ -48,6 +48,17 @@ INSTALLED_APPS = [
     'jobseekers',
     'employers',
    # 'django.contrib.sites',
+   #add djangorest framework
+    'rest_framework',
+    #add djangorest framework simplejwt
+    'rest_framework_simplejwt',
+    #add cors headers
+    'corsheaders',
+   
+    #swagger
+    'drf_yasg',
+    
+    
 ]
 
 MIDDLEWARE = [
@@ -137,3 +148,36 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+#add user model
+AUTH_USER_MODEL = 'common.CustomUser'
+
+#add rest framework settings
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+}
+
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header',
+            'description': 'JWT format: Bearer <your_access_token>',
+        }
+    }
+}
+
+#Add Token Expiry
+from datetime import timedelta
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=3600),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
+    'ROTATE_REFRESH_TOKENS': True,
+}

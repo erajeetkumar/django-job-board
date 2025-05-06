@@ -8,11 +8,17 @@ from django.db import models
 
 class Company(models.Model):
     name = models.CharField(max_length=255)
-    description = models.TextField()
-    logo = models.ImageField(upload_to='company_logos/')
+    description = models.TextField(blank=True, null=True)
+    address = models.TextField(blank=True, null=True)
+    logo = models.ImageField(upload_to='company_logos/', null=True, blank=True)
+    website = models.URLField(blank=True, null=True)
+    phone_number = models.CharField(max_length=15, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
+    created_by = models.ForeignKey('common.CustomUser', on_delete=models.CASCADE, related_name='companies')
+    # Add any other fields you need for the company
+    
+    
     def __str__(self):
         return self.name
 
@@ -30,4 +36,4 @@ class Employer(models.Model):
     user = models.OneToOneField('common.CustomUser', on_delete=models.CASCADE, related_name='employer')
 
     def __str__(self):
-        return self.company_name
+        return self.user.get_full_name()
